@@ -77,8 +77,8 @@
 <body class="p-4 md:p-6 font-sans">
   <div class="max-w-6xl mx-auto space-y-4">
     
-    <!-- Top Integrated Header Bar -->
-    <header class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-lg">
+    <!-- Top Integrated Header Bar (Added relative z-50 so popovers float over main content) -->
+    <header class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-lg relative z-50">
       
       <!-- Left: Clock & Date -->
       <div class="flex items-center gap-4 flex-shrink-0">
@@ -112,8 +112,8 @@
             ⚙️
           </button>
 
-          <!-- Popover Dropdown Panel -->
-          <div id="settings-menu" class="hidden absolute right-0 mt-2 glass-card rounded-2xl p-3 shadow-2xl z-50 flex flex-col gap-2">
+          <!-- Popover Dropdown Panel (Added z-[9999] and solid backdrop) -->
+          <div id="settings-menu" class="hidden absolute right-0 mt-2 bg-[#1e293b] border border-white/20 rounded-2xl p-3 shadow-2xl z-[9999] flex flex-col gap-2 min-w-[150px]">
             <!-- Theme Dropdown -->
             <select id="theme-select" class="ctrl-btn btn-custom text-xs font-medium px-2.5 py-1.5 rounded-lg cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--accent)] text-[var(--text-main)]">
               <option value="indigo">Theme: Indigo</option>
