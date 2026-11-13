@@ -5,64 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Startpage</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Theme definitions using CSS variables */
+    /* Theme definitions using RGB channels for dynamic translucency */
     :root[data-theme="indigo"] {
       --bg-color: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.7);
-      --card-border: rgba(255, 255, 255, 0.1);
+      --card-rgb: 30, 41, 59;
+      --card-opacity: 0.72;
+      --card-border: rgba(255, 255, 255, 0.12);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --accent: #6366f1;
       --accent-hover: #4f46e5;
-      --button-bg: rgba(51, 65, 85, 0.8);
-      --row-hover: rgba(255, 255, 255, 0.06);
+      --button-bg: rgba(51, 65, 85, 0.75);
+      --row-hover: rgba(255, 255, 255, 0.08);
     }
     :root[data-theme="slate"] {
       --bg-color: #1e293b;
-      --card-bg: rgba(51, 65, 85, 0.6);
-      --card-border: rgba(255, 255, 255, 0.08);
+      --card-rgb: 51, 65, 85;
+      --card-opacity: 0.72;
+      --card-border: rgba(255, 255, 255, 0.12);
       --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
+      --text-muted: #cbd5e1;
       --accent: #38bdf8;
       --accent-hover: #0284c7;
-      --button-bg: rgba(71, 85, 105, 0.7);
-      --row-hover: rgba(255, 255, 255, 0.08);
+      --button-bg: rgba(71, 85, 105, 0.75);
+      --row-hover: rgba(255, 255, 255, 0.09);
     }
     :root[data-theme="oled"] {
       --bg-color: #000000;
-      --card-bg: #121212;
-      --card-border: #262626;
+      --card-rgb: 18, 18, 22;
+      --card-opacity: 0.78;
+      --card-border: rgba(255, 255, 255, 0.14);
       --text-main: #ffffff;
       --text-muted: #a3a3a3;
       --accent: #a855f7;
       --accent-hover: #9333ea;
-      --button-bg: #1c1c1c;
-      --row-hover: rgba(255, 255, 255, 0.08);
+      --button-bg: rgba(32, 32, 38, 0.8);
+      --row-hover: rgba(255, 255, 255, 0.09);
     }
 
     body {
+      font-family: 'Inter', sans-serif;
       background-color: var(--bg-color);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--text-main);
-      transition: background-color 0.2s ease, color 0.2s ease;
+      transition: background-color 0.25s ease, color 0.2s ease;
       min-height: 100vh;
     }
+
+    /* Material Expressive Frosted Glass */
     .glass-card {
-      background-color: var(--card-bg);
+      background-color: rgba(var(--card-rgb), var(--card-opacity));
       border: 1px solid var(--card-border);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
+
     .btn-custom {
       background-color: var(--button-bg);
       border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
     }
     .btn-custom:hover {
       border-color: var(--accent);
     }
 
-    /* Fixed width for menu popover buttons */
-    .ctrl-btn {
-      width: 138px;
+    /* Custom Range Slider Styling */
+    input[type="range"] {
+      accent-color: #38bdf8;
     }
 
     /* Bento list item row hover effect */
@@ -74,17 +88,22 @@
     }
   </style>
 </head>
-<body class="p-4 md:p-6 font-sans">
-  <div class="max-w-6xl mx-auto space-y-4">
+<body id="app-body" class="px-4 pb-4 pt-2.5 md:px-6 md:pb-6 md:pt-3.5">
+  <!-- Subtle dark vignette overlay when custom wallpaper is active for crisp text legibility -->
+  <div id="wallpaper-vignette" class="fixed inset-0 bg-black/25 pointer-events-none hidden z-0"></div>
+
+  <div class="max-w-6xl mx-auto space-y-4 relative z-10">
     
-    <!-- Top Integrated Header Bar (Added relative z-50 so popovers float over main content) -->
-    <header class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-lg relative z-50">
+    <!-- Top Integrated Header Bar -->
+    <header class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 relative z-50">
       
-      <!-- Left: Clock & Date -->
-      <div class="flex items-center gap-4 flex-shrink-0">
-        <div>
-          <div id="clock" class="text-2xl md:text-3xl font-bold tracking-tight">00:00 PM</div>
-          <div id="date" class="text-[11px] md:text-xs text-[var(--text-muted)] font-medium mt-0.5">Monday, Jan 1, 2026</div>
+      <!-- Left: Clock & Date Pill (Matching Weather Widget) -->
+      <div class="flex items-center gap-3 flex-shrink-0">
+        <div class="glass-card px-3.5 py-2 rounded-2xl flex items-center">
+          <div class="flex flex-col text-left">
+            <div id="clock" class="text-base md:text-lg font-bold leading-tight tracking-tight">1:00 PM</div>
+            <div id="date" class="text-[11px] text-[var(--text-muted)] font-medium leading-tight mt-0.5">Monday, Jan 1, 2026</div>
+          </div>
         </div>
       </div>
 
@@ -94,134 +113,219 @@
           type="text"
           id="search-input"
           placeholder="Filter bookmarks or press Enter to search Google..."
-          class="w-full glass-card text-xs md:text-sm px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)] placeholder-[var(--text-muted)] transition shadow-inner"
+          class="w-full bg-black/20 border border-white/10 text-xs md:text-sm px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)] placeholder-[var(--text-muted)] transition shadow-inner"
         />
       </div>
 
-      <!-- Right: Weather Widget & Gear Menu Dropdown -->
+      <!-- Right: Detailed Weather Pill & Settings Trigger -->
       <div class="flex items-center gap-3 flex-shrink-0">
-        <!-- Weather Display -->
-        <div id="weather" class="glass-card px-3 py-2 rounded-xl flex items-center gap-2">
-          <span id="weather-icon" class="text-2xl md:text-3xl">⏳</span>
-          <span id="weather-temp" class="text-base md:text-lg font-semibold">--°F</span>
-        </div>
-
-        <!-- Settings Gear Popover Menu -->
-        <div class="relative">
-          <button id="gear-btn" class="btn-custom p-2.5 rounded-xl text-lg hover:bg-white/10 transition flex items-center justify-center focus:outline-none" title="Settings">
-            ⚙️
-          </button>
-
-          <!-- Popover Dropdown Panel (Added z-[9999] and solid backdrop) -->
-          <div id="settings-menu" class="hidden absolute right-0 mt-2 bg-[#1e293b] border border-white/20 rounded-2xl p-3 shadow-2xl z-[9999] flex flex-col gap-2 min-w-[150px]">
-            <!-- Theme Dropdown -->
-            <select id="theme-select" class="ctrl-btn btn-custom text-xs font-medium px-2.5 py-1.5 rounded-lg cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--accent)] text-[var(--text-main)]">
-              <option value="indigo">Theme: Indigo</option>
-              <option value="slate">Theme: Slate</option>
-              <option value="oled">Theme: OLED</option>
-            </select>
-
-            <!-- Import File Button -->
-            <label class="ctrl-btn btn-custom text-xs font-medium px-2.5 py-1.5 rounded-lg cursor-pointer text-center hover:bg-white/5 transition focus-within:ring-1 focus-within:ring-[var(--accent)]">
-              📁 Import HTML
-              <input type="file" id="file-input" accept=".html" class="hidden" />
-            </label>
-
-            <!-- Clear Data Button -->
-            <button id="clear-btn" class="ctrl-btn btn-custom text-xs font-medium px-2.5 py-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition">
-              🗑️ Clear Data
-            </button>
+        <!-- Detailed Weather Widget (Inspired by Tablet Hub) -->
+        <div id="weather" class="glass-card px-3.5 py-2 rounded-2xl flex items-center gap-3">
+          <span id="weather-icon" class="text-2xl md:text-3xl leading-none">⏳</span>
+          <div class="flex flex-col text-left">
+            <div class="flex items-center gap-1.5 text-sm md:text-base font-bold leading-tight">
+              <span id="weather-temp">--°F</span>
+              <span class="opacity-50">•</span>
+              <span id="weather-desc" class="font-semibold">Loading</span>
+            </div>
+            <div id="weather-location" class="text-[11px] text-[var(--text-muted)] font-medium leading-tight mt-0.5">
+              Detecting location...
+            </div>
           </div>
         </div>
+
+        <!-- Settings Gear Button -->
+        <button id="gear-btn" class="btn-custom p-3 rounded-2xl text-lg hover:bg-white/10 transition flex items-center justify-center focus:outline-none shadow-sm" title="Customize Dashboard">
+          ⚙️
+        </button>
       </div>
     </header>
 
     <!-- Bookmark Columns Grid (Bento Cards Layout) -->
     <main id="bookmarks-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <div id="empty-state" class="col-span-full text-center py-12 text-[var(--text-muted)] text-sm">
-        No bookmarks loaded yet. Click <strong>⚙️</strong> above to load your Netscape bookmarks file.
+      <div id="empty-state" class="col-span-full text-center py-12 text-[var(--text-muted)] text-sm glass-card rounded-2xl">
+        No bookmarks loaded yet. Click <strong>⚙️</strong> above to load your Netscape bookmarks file or customize your wallpaper.
       </div>
     </main>
+  </div>
+
+  <!-- Customization & Settings Modal (Material Expressive Sheet) -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] p-4">
+    <div id="settings-panel" class="bg-[#131826]/95 border border-white/15 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 text-slate-100 backdrop-blur-xl">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">⚙️</span>
+          <h2 class="text-base font-bold tracking-tight">Dashboard Settings</h2>
+        </div>
+        <button id="close-settings-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center text-slate-400 hover:text-white transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Section 1: Custom Wallpaper & Translucency -->
+      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-4">
+        <div class="flex items-center gap-2 text-sm font-semibold text-white">
+          <span>🖼️</span>
+          <span>Custom Wallpaper & Translucency</span>
+        </div>
+
+        <!-- Paste URL Input -->
+        <div class="space-y-1.5">
+          <label class="block text-xs text-slate-400">Paste Image / Unsplash URL</label>
+          <div class="flex gap-2">
+            <input 
+              type="url" 
+              id="wallpaper-url-input" 
+              placeholder="https://..." 
+              class="flex-1 bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition"
+            />
+            <button id="clear-wallpaper-btn" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-medium transition">
+              Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Local Device Photo -->
+        <div class="space-y-1.5">
+          <label class="block text-xs text-slate-400">Or Upload Local Device Photo</label>
+          <label class="w-full py-2.5 px-4 rounded-xl bg-[#0b0f19] hover:bg-white/5 border border-white/10 hover:border-sky-400/50 text-xs font-medium text-center cursor-pointer flex items-center justify-center gap-2 transition">
+            <span>📁</span>
+            <span>Choose File from Device</span>
+            <input type="file" id="wallpaper-file-input" accept="image/*" class="hidden" />
+          </label>
+        </div>
+
+        <!-- Card Translucency Slider -->
+        <div class="space-y-1.5 pt-1">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-300 font-medium">Card Translucency</span>
+            <span id="opacity-label" class="text-sky-400 font-bold">72%</span>
+          </div>
+          <input 
+            type="range" 
+            id="opacity-slider" 
+            min="20" 
+            max="98" 
+            value="72" 
+            class="w-full h-1.5 bg-slate-700 rounded-lg cursor-pointer"
+          />
+        </div>
+      </div>
+
+      <!-- Section 2: Theme & Bookmarks Management -->
+      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-3">
+        <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Appearance & Data</div>
+        
+        <div class="grid grid-cols-1 gap-2.5">
+          <!-- Theme Dropdown -->
+          <div class="flex items-center justify-between bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-2">
+            <span class="text-xs text-slate-300">Accent Palette</span>
+            <select id="theme-select" class="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer">
+              <option value="indigo" class="bg-slate-900">Indigo Glass</option>
+              <option value="slate" class="bg-slate-900">Slate Frost</option>
+              <option value="oled" class="bg-slate-900">OLED Dark</option>
+            </select>
+          </div>
+
+          <!-- Import & Clear Bookmarks Row -->
+          <div class="grid grid-cols-2 gap-2">
+            <label class="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer text-center transition shadow-md shadow-indigo-600/20">
+              📥 Import HTML
+              <input type="file" id="file-input" accept=".html" class="hidden" />
+            </label>
+
+            <button id="clear-btn" class="py-2.5 px-3 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold transition">
+              🗑️ Clear Bookmarks
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm / Feedback Banner inside modal -->
+      <div id="modal-toast" class="hidden text-center text-xs py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300"></div>
+    </div>
   </div>
 
   <script>
     // --- Direct Domain Ping Checker ---
     const statusCache = {};
 
-    function pingDomain(url) {
-      const dotId = `status-dot-${encodeURIComponent(url)}`;
-      
-      if (statusCache[url]) {
-        updateDotUI(dotId, statusCache[url]);
-        return;
-      }
-
+    function pingDomain(url, dotElement) {
       try {
-        const domain = new URL(url).origin;
+        const parsedUrl = new URL(url);
+        const origin = parsedUrl.origin;
+
+        if (statusCache[origin] !== undefined) {
+          applyDotColor(dotElement, statusCache[origin]);
+          return;
+        }
+
         const img = new Image();
-        let responded = false;
+        let finished = false;
 
         const timer = setTimeout(() => {
-          if (!responded) {
-            responded = true;
-            img.src = "";
-            statusCache[url] = 'offline';
-            updateDotUI(dotId, 'offline');
+          if (!finished) {
+            finished = true;
+            statusCache[origin] = false;
+            applyDotColor(dotElement, false);
           }
-        }, 3500); // 3.5 second timeout limit for pinging domain
+        }, 3500);
 
         img.onload = () => {
-          if (!responded) {
-            responded = true;
+          if (!finished) {
+            finished = true;
             clearTimeout(timer);
-            statusCache[url] = 'online';
-            updateDotUI(dotId, 'online');
+            statusCache[origin] = true;
+            applyDotColor(dotElement, true);
           }
         };
 
         img.onerror = () => {
-          if (!responded) {
-            responded = true;
+          if (!finished) {
+            finished = true;
             clearTimeout(timer);
-            // Receiving an HTTP error or favicon response still confirms server existence/reachability
-            statusCache[url] = 'online';
-            updateDotUI(dotId, 'online');
+            // If favicon fails to load, fallback to testing root fetch with no-cors to confirm host reachability
+            fetch(origin, { mode: 'no-cors', cache: 'no-store' })
+              .then(() => {
+                statusCache[origin] = true;
+                applyDotColor(dotElement, true);
+              })
+              .catch(() => {
+                statusCache[origin] = false;
+                applyDotColor(dotElement, false);
+              });
           }
         };
 
-        // Ping domain root favicon endpoint (bypasses CORS restrictions)
-        img.src = `${domain}/favicon.ico?_ping=${Date.now()}`;
+        img.src = `${origin}/favicon.ico?ping=${Date.now()}`;
       } catch (e) {
-        statusCache[url] = 'offline';
-        updateDotUI(dotId, 'offline');
+        applyDotColor(dotElement, false);
       }
     }
 
-    function updateDotUI(elementId, status) {
-      const dot = document.getElementById(elementId);
-      if (!dot) return;
-
-      dot.classList.remove('bg-emerald-500', 'bg-red-500');
-
-      if (status === 'online') {
-        dot.classList.add('bg-emerald-500');
-        dot.title = 'Online (Ping Responsive)';
+    function applyDotColor(dotElement, isOnline) {
+      if (!dotElement) return;
+      if (isOnline) {
+        dotElement.className = 'w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.6)]';
+        dotElement.title = 'Online';
       } else {
-        dot.classList.add('bg-red-500');
-        dot.title = 'Offline (Unreachable / Timeout)';
+        dotElement.className = 'w-2 h-2 rounded-full bg-red-500 flex-shrink-0 shadow-[0_0_6px_rgba(239,68,68,0.6)]';
+        dotElement.title = 'Offline / Unreachable';
       }
     }
 
     // --- Clock Setup (12-Hour format without seconds) ---
+    // --- Clock Setup (12-Hour format without seconds or leading zero) ---
     function updateClock() {
       const now = new Date();
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       hours = hours % 12 || 12;
-      const formattedHours = String(hours).padStart(2, '0');
 
-      document.getElementById('clock').textContent = `${formattedHours}:${minutes} ${ampm}`;
+      document.getElementById('clock').textContent = `${hours}:${minutes} ${ampm}`;
 
       const options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
       document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
@@ -229,57 +333,222 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // --- Weather Integration (Open-Meteo) ---
+    // --- Detailed Weather & Reverse Geocoding Integration ---
     const weatherCodes = {
       0: { icon: '☀️', desc: 'Clear' },
-      1: { icon: '🌤️', desc: 'Mainly Clear' },
+      1: { icon: '🌤️', desc: 'Mostly Clear' },
       2: { icon: '⛅', desc: 'Partly Cloudy' },
       3: { icon: '☁️', desc: 'Overcast' },
       45: { icon: '🌫️', desc: 'Fog' },
       48: { icon: '🌫️', desc: 'Rime Fog' },
       51: { icon: '🌧️', desc: 'Light Drizzle' },
-      61: { icon: '🌧️', desc: 'Rain' },
-      71: { icon: '❄️', desc: 'Snow' },
+      53: { icon: '🌧️', desc: 'Drizzle' },
+      55: { icon: '🌧️', desc: 'Heavy Drizzle' },
+      61: { icon: '🌧️', desc: 'Light Rain' },
+      63: { icon: '🌧️', desc: 'Rain' },
+      65: { icon: '🌧️', desc: 'Heavy Rain' },
+      71: { icon: '❄️', desc: 'Light Snow' },
+      73: { icon: '❄️', desc: 'Snow' },
+      75: { icon: '❄️', desc: 'Heavy Snow' },
       80: { icon: '🌦️', desc: 'Rain Showers' },
       95: { icon: '⛈️', desc: 'Thunderstorm' }
     };
 
-    function fetchWeather(lat, lon) {
+    function fetchLocationName(lat, lon) {
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`)
+        .then(res => res.json())
+        .then(data => {
+          const addr = data.address || {};
+          const city = addr.city || addr.town || addr.village || addr.county || 'Local Area';
+          const state = addr.state || '';
+          document.getElementById('weather-location').textContent = state ? `${city}, ${state}` : city;
+        })
+        .catch(() => {
+          document.getElementById('weather-location').textContent = 'Local Weather';
+        });
+    }
+
+    function fetchWeather(lat, lon, fallbackCity = null) {
       fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`)
         .then(res => res.json())
         .then(data => {
           const cw = data.current_weather;
-          const info = weatherCodes[cw.weathercode] || { icon: '🌡️', desc: '' };
+          const info = weatherCodes[cw.weathercode] || { icon: '🌡️', desc: 'Clear' };
           document.getElementById('weather-icon').textContent = info.icon;
           document.getElementById('weather-temp').textContent = `${Math.round(cw.temperature)}°F`;
+          document.getElementById('weather-desc').textContent = info.desc;
         })
         .catch(() => {
           document.getElementById('weather-temp').textContent = 'N/A';
+          document.getElementById('weather-desc').textContent = 'Unavailable';
         });
+
+      if (fallbackCity) {
+        document.getElementById('weather-location').textContent = fallbackCity;
+      } else {
+        fetchLocationName(lat, lon);
+      }
     }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         pos => fetchWeather(pos.coords.latitude, pos.coords.longitude),
-        () => fetchWeather(40.7128, -74.0060) // Fallback: NYC
+        () => fetchWeather(36.3320, -94.1185, 'Rogers, AR')
       );
     } else {
-      fetchWeather(40.7128, -74.0060);
+      fetchWeather(36.3320, -94.1185, 'Rogers, AR');
     }
 
-    // --- Settings Gear Menu Toggle ---
+    // --- Wallpaper, Translucency & Settings Modal Logic ---
     const gearBtn = document.getElementById('gear-btn');
-    const settingsMenu = document.getElementById('settings-menu');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettingsBtn = document.getElementById('close-settings-btn');
+    const wallpaperUrlInput = document.getElementById('wallpaper-url-input');
+    const wallpaperFileInput = document.getElementById('wallpaper-file-input');
+    const clearWallpaperBtn = document.getElementById('clear-wallpaper-btn');
+    const opacitySlider = document.getElementById('opacity-slider');
+    const opacityLabel = document.getElementById('opacity-label');
+    const appBody = document.getElementById('app-body');
+    const wallpaperVignette = document.getElementById('wallpaper-vignette');
+    const modalToast = document.getElementById('modal-toast');
 
-    gearBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      settingsMenu.classList.toggle('hidden');
+    function showModalToast(msg) {
+      modalToast.textContent = msg;
+      modalToast.classList.remove('hidden');
+      setTimeout(() => modalToast.classList.add('hidden'), 2500);
+    }
+
+    gearBtn.addEventListener('click', () => {
+      settingsModal.classList.remove('hidden');
+      settingsModal.classList.add('flex');
     });
 
-    document.addEventListener('click', (e) => {
-      if (!settingsMenu.contains(e.target) && e.target !== gearBtn) {
-        settingsMenu.classList.add('hidden');
+    closeSettingsBtn.addEventListener('click', () => {
+      settingsModal.classList.add('hidden');
+      settingsModal.classList.remove('flex');
+    });
+
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.classList.add('hidden');
+        settingsModal.classList.remove('flex');
       }
+    });
+
+    // Apply & Save Wallpaper
+    function applyWallpaper(source) {
+      if (source) {
+        // Automatically resolve Unsplash photo page URLs (e.g. unsplash.com/photos/slug-ID) into direct image URLs
+        let resolvedUrl = source;
+        const unsplashMatch = source.match(/^https?:\/\/(?:www\.)?unsplash\.com\/photos\/(?:[a-zA-Z0-9-]+-)?([a-zA-Z0-9_-]{11})(?:[/?#].*)?$/);
+        if (unsplashMatch && unsplashMatch[1]) {
+          resolvedUrl = `https://unsplash.com/photos/${unsplashMatch[1]}/download?force=true&w=1920`;
+        }
+
+        // Preload image to verify it renders properly before saving
+        const testImg = new Image();
+        testImg.onload = () => {
+          appBody.style.backgroundImage = `url('${resolvedUrl}')`;
+          wallpaperVignette.classList.remove('hidden');
+          try {
+            localStorage.setItem('startpage_wallpaper', resolvedUrl);
+            showModalToast('Wallpaper applied!');
+          } catch (err) {
+            showModalToast('Wallpaper applied! (Large local photos may not persist across reloads)');
+          }
+        };
+        testImg.onerror = () => {
+          showModalToast('⚠️ Could not load image. Try right-clicking the photo and selecting "Copy Image Link".');
+        };
+        testImg.src = resolvedUrl;
+      } else {
+        appBody.style.backgroundImage = 'none';
+        wallpaperVignette.classList.add('hidden');
+        localStorage.removeItem('startpage_wallpaper');
+      }
+    }
+
+    // Load saved wallpaper on startup
+    const savedWallpaper = localStorage.getItem('startpage_wallpaper');
+    if (savedWallpaper) {
+      appBody.style.backgroundImage = `url('${savedWallpaper}')`;
+      wallpaperVignette.classList.remove('hidden');
+      if (!savedWallpaper.startsWith('data:')) {
+        wallpaperUrlInput.value = savedWallpaper;
+      }
+    }
+
+    // URL Input Handler (triggers on Enter key or input change)
+    wallpaperUrlInput.addEventListener('change', (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        applyWallpaper(url);
+      }
+    });
+    wallpaperUrlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const url = e.target.value.trim();
+        if (url) applyWallpaper(url);
+      }
+    });
+
+    // Local Device File Upload Handler (Compressed via Canvas so it fits in localStorage)
+    wallpaperFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 1920;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          wallpaperUrlInput.value = '';
+          applyWallpaper(compressedDataUrl);
+          showModalToast('Local photo set as wallpaper!');
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Clear Wallpaper Handler
+    clearWallpaperBtn.addEventListener('click', () => {
+      wallpaperUrlInput.value = '';
+      wallpaperFileInput.value = '';
+      applyWallpaper(null);
+      showModalToast('Wallpaper cleared.');
+    });
+
+    // Card Translucency Slider
+    function applyOpacity(val) {
+      const decimal = (val / 100).toFixed(2);
+      document.documentElement.style.setProperty('--card-opacity', decimal);
+      opacityLabel.textContent = `${val}%`;
+      localStorage.setItem('startpage_opacity', val);
+    }
+
+    const savedOpacity = localStorage.getItem('startpage_opacity') || '72';
+    opacitySlider.value = savedOpacity;
+    applyOpacity(savedOpacity);
+
+    opacitySlider.addEventListener('input', (e) => {
+      applyOpacity(e.target.value);
     });
 
     // --- Theme Persistence ---
@@ -292,6 +561,7 @@
       const selected = e.target.value;
       document.documentElement.setAttribute('data-theme', selected);
       localStorage.setItem('startpage_theme', selected);
+      applyOpacity(opacitySlider.value);
     });
 
     // --- Bookmark Parsing & LocalStorage Persistence ---
@@ -300,6 +570,15 @@
     function renderBookmarks(data, filter = '') {
       const grid = document.getElementById('bookmarks-grid');
       grid.innerHTML = '';
+
+      if (data.length === 0) {
+        grid.innerHTML = `
+          <div id="empty-state" class="col-span-full text-center py-12 text-[var(--text-muted)] text-sm glass-card rounded-2xl">
+            No bookmarks loaded yet. Click <strong>⚙️</strong> above to load your Netscape bookmarks file or customize your wallpaper.
+          </div>
+        `;
+        return;
+      }
 
       const query = filter.toLowerCase().trim();
       let hasMatches = false;
@@ -327,16 +606,24 @@
 
           filteredLinks.forEach(link => {
             const li = document.createElement('li');
-            li.innerHTML = `
-              <a href="${link.url}" target="_blank" class="bento-row flex items-center gap-2 truncate px-2.5 py-1.5 rounded-xl text-[var(--text-main)] opacity-90 hover:opacity-100 hover:text-[var(--accent)] transition">
-                <span id="status-dot-${encodeURIComponent(link.url)}" class="w-2 h-2 rounded-full bg-emerald-500 shrink-0 transition-colors duration-300" title="Pinging status..."></span>
-                <span class="truncate">${link.title}</span>
-              </a>
-            `;
+            const anchor = document.createElement('a');
+            anchor.href = link.url;
+            anchor.className = 'bento-row flex items-center gap-2.5 truncate px-2.5 py-1.5 rounded-xl text-[var(--text-main)] opacity-90 hover:opacity-100 hover:text-[var(--accent)] transition';
+
+            const dot = document.createElement('span');
+            dot.className = 'w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 shadow-[0_0_6px_rgba(52,211,153,0.6)]';
+            dot.title = 'Online';
+
+            const label = document.createElement('span');
+            label.className = 'truncate';
+            label.textContent = link.title;
+
+            anchor.appendChild(dot);
+            anchor.appendChild(label);
+            li.appendChild(anchor);
             list.appendChild(li);
 
-            // Trigger direct ping check
-            pingDomain(link.url);
+            pingDomain(link.url, dot);
           });
 
           card.appendChild(list);
@@ -346,7 +633,7 @@
 
       if (!hasMatches && data.length > 0) {
         grid.innerHTML = `
-          <div class="col-span-full text-center py-8 text-[var(--text-muted)] text-sm">
+          <div class="col-span-full text-center py-8 text-[var(--text-muted)] text-sm glass-card rounded-2xl">
             No matching bookmarks found. Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-xs">Enter</kbd> to search Google.
           </div>
         `;
@@ -394,8 +681,9 @@
           categoriesData = parsed;
           localStorage.setItem('startpage_bookmarks', JSON.stringify(categoriesData));
           renderBookmarks(categoriesData);
+          showModalToast(`Imported ${parsed.length} bookmark categories!`);
         } else {
-          alert('Could not parse bookmarks from this file. Ensure it is a valid Netscape HTML export.');
+          showModalToast('Could not parse bookmarks. Check file format.');
         }
       };
       reader.readAsText(file);
@@ -416,12 +704,24 @@
       }
     });
 
-    // --- Clear Data Action ---
-    document.getElementById('clear-btn').addEventListener('click', () => {
-      if (confirm('Clear imported bookmarks from browser storage?')) {
+    // --- Clear Data Action (Custom two-step confirmation without native confirm()) ---
+    let confirmClearPending = false;
+    const clearBtn = document.getElementById('clear-btn');
+    clearBtn.addEventListener('click', () => {
+      if (!confirmClearPending) {
+        confirmClearPending = true;
+        clearBtn.textContent = '⚠️ Click again to confirm';
+        setTimeout(() => {
+          confirmClearPending = false;
+          clearBtn.innerHTML = '🗑️ Clear Bookmarks';
+        }, 3500);
+      } else {
         localStorage.removeItem('startpage_bookmarks');
         categoriesData = [];
         renderBookmarks(categoriesData);
+        confirmClearPending = false;
+        clearBtn.innerHTML = '🗑️ Clear Bookmarks';
+        showModalToast('All bookmarks cleared.');
       }
     });
 
