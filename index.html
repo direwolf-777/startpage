@@ -76,30 +76,15 @@
       -webkit-backdrop-filter: blur(22px) saturate(160%);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
-  <style>
-    /* Theme definitions using RGB channels for dynamic translucency */
-    :root[data-theme="indigo"] {
-      --bg-color: #0f172a;
-      --card-rgb: 30, 41, 59;
-      --card-opacity: 0.72;
-      --card-border: rgba(255, 255, 255, 0.12);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --button-bg: rgba(51, 65, 85, 0.75);
-      --row-hover: rgba(255, 255, 255, 0.08);
-    }
+
     .btn-custom:hover {
       border-color: var(--accent);
     }
 
-    /* Custom Range Slider Styling */
     input[type="range"] {
       accent-color: #38bdf8;
     }
 
-    /* Bento list item row hover effect & compactness */
     .bento-row {
       transition: background-color 0.15s ease, transform 0.15s ease;
     }
@@ -109,7 +94,6 @@
   </style>
 </head>
 <body id="app-body" class="px-4 pb-2 pt-2 md:px-6 md:pb-2 md:pt-2">
-  <!-- Subtle dark vignette overlay when custom wallpaper is active for crisp text legibility -->
   <div id="wallpaper-vignette" class="fixed inset-0 bg-black/25 pointer-events-none hidden z-0"></div>
 
   <div class="max-w-6xl mx-auto w-full space-y-[11px] relative z-10">
@@ -117,7 +101,7 @@
     <!-- Top Integrated Header Bar -->
     <header class="glass-card rounded-2xl px-4 py-[6.5px] flex flex-col sm:flex-row justify-between items-center gap-4 relative z-50">
       
-      <!-- Left: Clean Clock & Date directly on panel -->
+      <!-- Left: Clean Clock & Date -->
       <div class="flex items-center gap-3 flex-shrink-0 pl-1">
         <div class="flex flex-col text-left">
           <div id="clock" class="text-base md:text-lg font-bold leading-tight tracking-tight">1:00 PM</div>
@@ -135,9 +119,8 @@
         />
       </div>
 
-      <!-- Right: Clean Weather Widget & Compact Settings Trigger -->
+      <!-- Right: Weather Widget & Settings Trigger -->
       <div class="flex items-center gap-3 flex-shrink-0 pr-0.5">
-        <!-- Detailed Weather Display directly on panel -->
         <div id="weather" class="flex items-center gap-2.5">
           <span id="weather-icon" class="text-2xl md:text-3xl leading-none">⏳</span>
           <div class="flex flex-col text-left">
@@ -152,14 +135,13 @@
           </div>
         </div>
 
-        <!-- Settings Gear Button -->
         <button id="gear-btn" class="btn-custom p-1.5 rounded-xl text-base hover:bg-white/10 transition flex items-center justify-center focus:outline-none shadow-sm" title="Customize Dashboard">
           ⚙️
         </button>
       </div>
     </header>
 
-    <!-- Bookmark Columns Grid (Bento Cards Layout) -->
+    <!-- Bookmark Columns Grid -->
     <main id="bookmarks-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 items-stretch">
       <div id="empty-state" class="col-span-full text-center py-12 text-[var(--text-muted)] text-sm glass-card rounded-2xl">
         No bookmarks loaded yet. Click <strong>⚙️</strong> above to load your Netscape bookmarks file or customize your wallpaper.
@@ -167,11 +149,10 @@
     </main>
   </div>
 
-  <!-- Customization & Settings Modal (Material Expressive Sheet) -->
+  <!-- Customization & Settings Modal -->
   <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] p-3 sm:p-4">
     <div id="settings-panel" class="bg-[#131826]/95 border border-white/15 rounded-3xl max-w-md w-full max-h-[92vh] overflow-y-auto p-4 sm:p-5 shadow-2xl space-y-3.5 text-slate-100 backdrop-blur-xl">
       
-      <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div class="flex items-center gap-2">
           <span class="text-base">⚙️</span>
@@ -189,7 +170,6 @@
           <span>Custom Wallpaper & Translucency</span>
         </div>
 
-        <!-- Paste URL Input -->
         <div class="space-y-1">
           <label class="block text-[11px] text-slate-400">Paste Image / Unsplash URL</label>
           <div class="flex gap-2">
@@ -205,7 +185,6 @@
           </div>
         </div>
 
-        <!-- Upload Local Device Photo -->
         <div class="space-y-1">
           <label class="block text-[11px] text-slate-400">Or Upload Local Device Photo</label>
           <label class="w-full py-2 px-3 rounded-xl bg-[#0b0f19] hover:bg-white/5 border border-white/10 hover:border-sky-400/50 text-xs font-medium text-center cursor-pointer flex items-center justify-center gap-2 transition">
@@ -215,7 +194,6 @@
           </label>
         </div>
 
-        <!-- Card Translucency Slider -->
         <div class="space-y-1 pt-0.5">
           <div class="flex justify-between items-center text-xs">
             <span class="text-slate-300 font-medium">Card Translucency</span>
@@ -237,7 +215,6 @@
         <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Appearance & Data</div>
         
         <div class="grid grid-cols-1 gap-2">
-          <!-- Theme Dropdown -->
           <div class="flex items-center justify-between bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-1.5">
             <span class="text-xs text-slate-300">Accent Palette</span>
             <select id="theme-select" class="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer">
@@ -248,7 +225,6 @@
             </select>
           </div>
 
-          <!-- Import & Clear Bookmarks Row -->
           <div class="grid grid-cols-2 gap-2">
             <label class="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer text-center transition shadow-md shadow-indigo-600/20">
               📥 Import HTML
@@ -262,13 +238,11 @@
         </div>
       </div>
 
-      <!-- Confirm / Feedback Banner inside modal -->
       <div id="modal-toast" class="hidden text-center text-xs py-1.5 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300"></div>
     </div>
   </div>
 
   <script>
-    // --- Direct Domain Ping Checker ---
     const statusCache = {};
 
     function pingDomain(url, dotElement) {
@@ -305,7 +279,6 @@
           if (!finished) {
             finished = true;
             clearTimeout(timer);
-            // If favicon fails to load, fallback to testing root fetch with no-cors to confirm host reachability
             fetch(origin, { mode: 'no-cors', cache: 'no-store' })
               .then(() => {
                 statusCache[origin] = true;
@@ -335,8 +308,6 @@
       }
     }
 
-    // --- Clock Setup (12-Hour format without seconds) ---
-    // --- Clock Setup (12-Hour format without seconds or leading zero) ---
     function updateClock() {
       const now = new Date();
       let hours = now.getHours();
@@ -352,7 +323,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // --- Detailed Weather & Reverse Geocoding Integration ---
     const weatherCodes = {
       0: { icon: '☀️', desc: 'Clear' },
       1: { icon: '🌤️', desc: 'Mostly Clear' },
@@ -418,7 +388,6 @@
       fetchWeather(36.3320, -94.1185, 'Rogers, AR');
     }
 
-    // --- Wallpaper, Translucency & Settings Modal Logic ---
     const gearBtn = document.getElementById('gear-btn');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettingsBtn = document.getElementById('close-settings-btn');
@@ -454,17 +423,14 @@
       }
     });
 
-    // Apply & Save Wallpaper
     function applyWallpaper(source) {
       if (source) {
-        // Automatically resolve Unsplash photo page URLs (e.g. unsplash.com/photos/slug-ID) into direct image URLs
         let resolvedUrl = source;
         const unsplashMatch = source.match(/^https?:\/\/(?:www\.)?unsplash\.com\/photos\/(?:[a-zA-Z0-9-]+-)?([a-zA-Z0-9_-]{11})(?:[/?#].*)?$/);
         if (unsplashMatch && unsplashMatch[1]) {
           resolvedUrl = `https://unsplash.com/photos/${unsplashMatch[1]}/download?force=true&w=1920`;
         }
 
-        // Preload image to verify it renders properly before saving
         const testImg = new Image();
         testImg.onload = () => {
           appBody.style.backgroundImage = `url('${resolvedUrl}')`;
@@ -473,11 +439,11 @@
             localStorage.setItem('startpage_wallpaper', resolvedUrl);
             showModalToast('Wallpaper applied!');
           } catch (err) {
-            showModalToast('Wallpaper applied! (Large local photos may not persist across reloads)');
+            showModalToast('Wallpaper applied!');
           }
         };
         testImg.onerror = () => {
-          showModalToast('⚠️ Could not load image. Try right-clicking the photo and selecting "Copy Image Link".');
+          showModalToast('⚠️ Could not load image.');
         };
         testImg.src = resolvedUrl;
       } else {
@@ -487,7 +453,6 @@
       }
     }
 
-    // Load saved wallpaper on startup
     const savedWallpaper = localStorage.getItem('startpage_wallpaper');
     if (savedWallpaper) {
       appBody.style.backgroundImage = `url('${savedWallpaper}')`;
@@ -497,12 +462,9 @@
       }
     }
 
-    // URL Input Handler (triggers on Enter key or input change)
     wallpaperUrlInput.addEventListener('change', (e) => {
       const url = e.target.value.trim();
-      if (url) {
-        applyWallpaper(url);
-      }
+      if (url) applyWallpaper(url);
     });
     wallpaperUrlInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -512,7 +474,6 @@
       }
     });
 
-    // Local Device File Upload Handler (Compressed via Canvas so it fits in localStorage)
     wallpaperFileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -546,7 +507,6 @@
       reader.readAsDataURL(file);
     });
 
-    // Clear Wallpaper Handler
     clearWallpaperBtn.addEventListener('click', () => {
       wallpaperUrlInput.value = '';
       wallpaperFileInput.value = '';
@@ -554,7 +514,6 @@
       showModalToast('Wallpaper cleared.');
     });
 
-    // Card Translucency Slider
     function applyOpacity(val) {
       const decimal = (val / 100).toFixed(2);
       document.documentElement.style.setProperty('--card-opacity', decimal);
@@ -570,7 +529,6 @@
       applyOpacity(e.target.value);
     });
 
-    // --- Theme Persistence ---
     const themeSelect = document.getElementById('theme-select');
     const savedTheme = localStorage.getItem('startpage_theme') || 'indigo';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -583,7 +541,6 @@
       applyOpacity(opacitySlider.value);
     });
 
-    // --- Bookmark Parsing & LocalStorage Persistence ---
     let categoriesData = JSON.parse(localStorage.getItem('startpage_bookmarks') || '[]');
 
     function renderBookmarks(data, filter = '') {
@@ -627,6 +584,9 @@
             const li = document.createElement('li');
             const anchor = document.createElement('a');
             anchor.href = link.url;
+            // Added target="_blank" so links break out of extension iframes cleanly
+            anchor.target = "_blank";
+            anchor.rel = "noopener noreferrer";
             anchor.className = 'bento-row flex items-center gap-2.5 truncate px-2.5 py-1.5 rounded-xl text-[var(--text-main)] opacity-90 hover:opacity-100 hover:text-[var(--accent)] transition';
 
             const dot = document.createElement('span');
@@ -659,7 +619,6 @@
       }
     }
 
-    // --- Netscape HTML Parser ---
     function parseBookmarksHTML(htmlText) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlText, 'text/html');
@@ -708,7 +667,6 @@
       reader.readAsText(file);
     });
 
-    // --- Search & Direct Google Search Trigger ---
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('input', (e) => {
       renderBookmarks(categoriesData, e.target.value);
@@ -718,12 +676,12 @@
       if (e.key === 'Enter') {
         const q = searchInput.value.trim();
         if (q) {
-          window.location.href = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+          // Open search queries in a new tab as well
+          window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, '_blank', 'noopener,noreferrer');
         }
       }
     });
 
-    // --- Clear Data Action (Custom two-step confirmation without native confirm()) ---
     let confirmClearPending = false;
     const clearBtn = document.getElementById('clear-btn');
     clearBtn.addEventListener('click', () => {
@@ -744,7 +702,6 @@
       }
     });
 
-    // Initial render call
     renderBookmarks(categoriesData);
   </script>
 </body>
