@@ -44,6 +44,18 @@
       --button-bg: rgba(32, 32, 38, 0.8);
       --row-hover: rgba(255, 255, 255, 0.09);
     }
+    :root[data-theme="nobara"] {
+      --bg-color: #14121b;
+      --card-rgb: 27, 24, 36;
+      --card-opacity: 0.78;
+      --card-border: rgba(149, 117, 205, 0.22);
+      --text-main: #eff0f1;
+      --text-muted: #a6a2b5;
+      --accent: #8b68d6;
+      --accent-hover: #6c54aa;
+      --button-bg: rgba(40, 36, 54, 0.82);
+      --row-hover: rgba(139, 104, 214, 0.14);
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -64,11 +76,19 @@
       -webkit-backdrop-filter: blur(22px) saturate(160%);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
-
-    .btn-custom {
-      background-color: var(--button-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(12px);
+  <style>
+    /* Theme definitions using RGB channels for dynamic translucency */
+    :root[data-theme="indigo"] {
+      --bg-color: #0f172a;
+      --card-rgb: 30, 41, 59;
+      --card-opacity: 0.72;
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --button-bg: rgba(51, 65, 85, 0.75);
+      --row-hover: rgba(255, 255, 255, 0.08);
     }
     .btn-custom:hover {
       border-color: var(--accent);
@@ -79,7 +99,7 @@
       accent-color: #38bdf8;
     }
 
-    /* Bento list item row hover effect */
+    /* Bento list item row hover effect & compactness */
     .bento-row {
       transition: background-color 0.15s ease, transform 0.15s ease;
     }
@@ -88,22 +108,20 @@
     }
   </style>
 </head>
-<body id="app-body" class="px-4 pb-4 pt-2.5 md:px-6 md:pb-6 md:pt-3.5">
+<body id="app-body" class="px-4 pb-2 pt-2 md:px-6 md:pb-2 md:pt-2">
   <!-- Subtle dark vignette overlay when custom wallpaper is active for crisp text legibility -->
   <div id="wallpaper-vignette" class="fixed inset-0 bg-black/25 pointer-events-none hidden z-0"></div>
 
-  <div class="max-w-6xl mx-auto space-y-4 relative z-10">
+  <div class="max-w-6xl mx-auto w-full space-y-[11px] relative z-10">
     
     <!-- Top Integrated Header Bar -->
-    <header class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 relative z-50">
+    <header class="glass-card rounded-2xl px-4 py-[6.5px] flex flex-col sm:flex-row justify-between items-center gap-4 relative z-50">
       
-      <!-- Left: Clock & Date Pill (Matching Weather Widget) -->
-      <div class="flex items-center gap-3 flex-shrink-0">
-        <div class="glass-card px-3.5 py-2 rounded-2xl flex items-center">
-          <div class="flex flex-col text-left">
-            <div id="clock" class="text-base md:text-lg font-bold leading-tight tracking-tight">1:00 PM</div>
-            <div id="date" class="text-[11px] text-[var(--text-muted)] font-medium leading-tight mt-0.5">Monday, Jan 1, 2026</div>
-          </div>
+      <!-- Left: Clean Clock & Date directly on panel -->
+      <div class="flex items-center gap-3 flex-shrink-0 pl-1">
+        <div class="flex flex-col text-left">
+          <div id="clock" class="text-base md:text-lg font-bold leading-tight tracking-tight">1:00 PM</div>
+          <div id="date" class="text-[11px] text-[var(--text-muted)] font-medium leading-tight mt-0.5">Monday, Jan 1, 2026</div>
         </div>
       </div>
 
@@ -113,14 +131,14 @@
           type="text"
           id="search-input"
           placeholder="Filter bookmarks or press Enter to search Google..."
-          class="w-full bg-black/20 border border-white/10 text-xs md:text-sm px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)] placeholder-[var(--text-muted)] transition shadow-inner"
+          class="w-full bg-black/20 border border-white/10 text-xs md:text-sm px-3.5 py-[6.5px] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent)] placeholder-[var(--text-muted)] transition shadow-inner"
         />
       </div>
 
-      <!-- Right: Detailed Weather Pill & Settings Trigger -->
-      <div class="flex items-center gap-3 flex-shrink-0">
-        <!-- Detailed Weather Widget (Inspired by Tablet Hub) -->
-        <div id="weather" class="glass-card px-3.5 py-2 rounded-2xl flex items-center gap-3">
+      <!-- Right: Clean Weather Widget & Compact Settings Trigger -->
+      <div class="flex items-center gap-3 flex-shrink-0 pr-0.5">
+        <!-- Detailed Weather Display directly on panel -->
+        <div id="weather" class="flex items-center gap-2.5">
           <span id="weather-icon" class="text-2xl md:text-3xl leading-none">⏳</span>
           <div class="flex flex-col text-left">
             <div class="flex items-center gap-1.5 text-sm md:text-base font-bold leading-tight">
@@ -135,14 +153,14 @@
         </div>
 
         <!-- Settings Gear Button -->
-        <button id="gear-btn" class="btn-custom p-3 rounded-2xl text-lg hover:bg-white/10 transition flex items-center justify-center focus:outline-none shadow-sm" title="Customize Dashboard">
+        <button id="gear-btn" class="btn-custom p-1.5 rounded-xl text-base hover:bg-white/10 transition flex items-center justify-center focus:outline-none shadow-sm" title="Customize Dashboard">
           ⚙️
         </button>
       </div>
     </header>
 
     <!-- Bookmark Columns Grid (Bento Cards Layout) -->
-    <main id="bookmarks-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <main id="bookmarks-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 items-stretch">
       <div id="empty-state" class="col-span-full text-center py-12 text-[var(--text-muted)] text-sm glass-card rounded-2xl">
         No bookmarks loaded yet. Click <strong>⚙️</strong> above to load your Netscape bookmarks file or customize your wallpaper.
       </div>
@@ -150,47 +168,47 @@
   </div>
 
   <!-- Customization & Settings Modal (Material Expressive Sheet) -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] p-4">
-    <div id="settings-panel" class="bg-[#131826]/95 border border-white/15 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 text-slate-100 backdrop-blur-xl">
+  <div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] p-3 sm:p-4">
+    <div id="settings-panel" class="bg-[#131826]/95 border border-white/15 rounded-3xl max-w-md w-full max-h-[92vh] overflow-y-auto p-4 sm:p-5 shadow-2xl space-y-3.5 text-slate-100 backdrop-blur-xl">
       
       <!-- Modal Header -->
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
         <div class="flex items-center gap-2">
-          <span class="text-lg">⚙️</span>
-          <h2 class="text-base font-bold tracking-tight">Dashboard Settings</h2>
+          <span class="text-base">⚙️</span>
+          <h2 class="text-sm sm:text-base font-bold tracking-tight">Dashboard Settings</h2>
         </div>
-        <button id="close-settings-btn" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center text-slate-400 hover:text-white transition">
+        <button id="close-settings-btn" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center text-slate-400 hover:text-white transition text-xs">
           ✕
         </button>
       </div>
 
       <!-- Section 1: Custom Wallpaper & Translucency -->
-      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-4">
-        <div class="flex items-center gap-2 text-sm font-semibold text-white">
+      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-3.5 space-y-3">
+        <div class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-white">
           <span>🖼️</span>
           <span>Custom Wallpaper & Translucency</span>
         </div>
 
         <!-- Paste URL Input -->
-        <div class="space-y-1.5">
-          <label class="block text-xs text-slate-400">Paste Image / Unsplash URL</label>
+        <div class="space-y-1">
+          <label class="block text-[11px] text-slate-400">Paste Image / Unsplash URL</label>
           <div class="flex gap-2">
             <input 
               type="url" 
               id="wallpaper-url-input" 
               placeholder="https://..." 
-              class="flex-1 bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition"
+              class="flex-1 bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition"
             />
-            <button id="clear-wallpaper-btn" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-medium transition">
+            <button id="clear-wallpaper-btn" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-medium transition">
               Clear
             </button>
           </div>
         </div>
 
         <!-- Upload Local Device Photo -->
-        <div class="space-y-1.5">
-          <label class="block text-xs text-slate-400">Or Upload Local Device Photo</label>
-          <label class="w-full py-2.5 px-4 rounded-xl bg-[#0b0f19] hover:bg-white/5 border border-white/10 hover:border-sky-400/50 text-xs font-medium text-center cursor-pointer flex items-center justify-center gap-2 transition">
+        <div class="space-y-1">
+          <label class="block text-[11px] text-slate-400">Or Upload Local Device Photo</label>
+          <label class="w-full py-2 px-3 rounded-xl bg-[#0b0f19] hover:bg-white/5 border border-white/10 hover:border-sky-400/50 text-xs font-medium text-center cursor-pointer flex items-center justify-center gap-2 transition">
             <span>📁</span>
             <span>Choose File from Device</span>
             <input type="file" id="wallpaper-file-input" accept="image/*" class="hidden" />
@@ -198,7 +216,7 @@
         </div>
 
         <!-- Card Translucency Slider -->
-        <div class="space-y-1.5 pt-1">
+        <div class="space-y-1 pt-0.5">
           <div class="flex justify-between items-center text-xs">
             <span class="text-slate-300 font-medium">Card Translucency</span>
             <span id="opacity-label" class="text-sky-400 font-bold">72%</span>
@@ -215,28 +233,29 @@
       </div>
 
       <!-- Section 2: Theme & Bookmarks Management -->
-      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-3">
-        <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Appearance & Data</div>
+      <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-3.5 space-y-2.5">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Appearance & Data</div>
         
-        <div class="grid grid-cols-1 gap-2.5">
+        <div class="grid grid-cols-1 gap-2">
           <!-- Theme Dropdown -->
-          <div class="flex items-center justify-between bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-2">
+          <div class="flex items-center justify-between bg-[#0b0f19] border border-white/10 rounded-xl px-3 py-1.5">
             <span class="text-xs text-slate-300">Accent Palette</span>
             <select id="theme-select" class="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer">
               <option value="indigo" class="bg-slate-900">Indigo Glass</option>
               <option value="slate" class="bg-slate-900">Slate Frost</option>
               <option value="oled" class="bg-slate-900">OLED Dark</option>
+              <option value="nobara" class="bg-slate-900">Nobara Linux</option>
             </select>
           </div>
 
           <!-- Import & Clear Bookmarks Row -->
           <div class="grid grid-cols-2 gap-2">
-            <label class="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer text-center transition shadow-md shadow-indigo-600/20">
+            <label class="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer text-center transition shadow-md shadow-indigo-600/20">
               📥 Import HTML
               <input type="file" id="file-input" accept=".html" class="hidden" />
             </label>
 
-            <button id="clear-btn" class="py-2.5 px-3 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold transition">
+            <button id="clear-btn" class="py-2 px-3 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold transition">
               🗑️ Clear Bookmarks
             </button>
           </div>
@@ -244,7 +263,7 @@
       </div>
 
       <!-- Confirm / Feedback Banner inside modal -->
-      <div id="modal-toast" class="hidden text-center text-xs py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300"></div>
+      <div id="modal-toast" class="hidden text-center text-xs py-1.5 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300"></div>
     </div>
   </div>
 
@@ -591,10 +610,10 @@
         if (filteredLinks.length > 0) {
           hasMatches = true;
           const card = document.createElement('div');
-          card.className = 'glass-card rounded-2xl p-4 shadow-sm flex flex-col space-y-3';
+          card.className = 'glass-card rounded-2xl px-3.5 pb-[12px] pt-[13px] shadow-sm flex flex-col space-y-2 h-full';
 
           const header = document.createElement('div');
-          header.className = 'flex items-center justify-between border-b border-[var(--card-border)] pb-2.5 px-1';
+          header.className = 'flex items-center justify-between border-b border-[var(--card-border)] pb-1.5 px-1';
           header.innerHTML = `
             <span class="text-xs font-bold uppercase tracking-wider text-[var(--accent)]">${cat.name}</span>
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-[var(--text-muted)] font-mono">${filteredLinks.length}</span>
@@ -602,7 +621,7 @@
           card.appendChild(header);
 
           const list = document.createElement('ul');
-          list.className = 'space-y-1 text-xs md:text-sm';
+          list.className = 'space-y-1 text-xs md:text-sm pt-0';
 
           filteredLinks.forEach(link => {
             const li = document.createElement('li');
